@@ -73,15 +73,12 @@
 ;;;;  these are the lines i use to set up correct auto-ing
 ;;(autoload 'bison-mode "bison-mode.el")
 ;;(add-to-set! auto-mode-alist '("\\.y$" . bison-mode))
-
-;;(autoload 'flex-mode "flex-mode")
-;;(add-to-set! auto-mode-alist '("\\.l$" . flex-mode))
+;;(add-to-set! auto-mode-alist '("\\.l$" . bison-mode))
 
 ;;; Code:
 
 ;; *************** dependencies ***************
 (require 'derived)			;; define-derived-mode
-(require 'flex-mode)			;; for flex-mode derivation
 (require 'make-regexp)			;; make-regexp
 
 ;; *************** internal vars ***************
@@ -231,10 +228,9 @@ and \(point\)"
 
 ;; *************** bison-mode ***************
 
-(define-derived-mode bison-mode flex-mode "Bison"
-  "Major mode for editing bison/yacc files
+(define-derived-mode bison-mode c-mode "Bison"
+  "Major mode for editing bison/yacc files."
 
-"
   ;; try to set the indentation correctly
   (setq-default c-basic-offset 4)
   (make-variable-buffer-local 'c-basic-offset)
@@ -274,9 +270,7 @@ and \(point\)"
   (setq font-lock-defaults '((bison-font-lock-keywords
 			      bison-font-lock-keywords-1
 			      bison-font-lock-keywords-2)
-			     nil nil nil))
-
-)
+			     nil nil nil)))
 
 
 ;; *************** section parsers ***************
