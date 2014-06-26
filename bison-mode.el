@@ -1,7 +1,7 @@
-;; bison-mode.el --- Major mode for editing bison, yacc and lex files.
+;;; bison-mode.el --- Major mode for editing bison, yacc and lex files.
 
-;;;; Copyright (C) 1998 Eric Beuscher
-
+;; Copyright (C) 1998 Eric Beuscher
+;;
 ;; Author:   Eric Beuscher <beuscher@eecs.tulane.edu>
 ;; Created:  2 Feb 1998
 ;; Version:  0.2
@@ -9,7 +9,7 @@
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2 of the License, or 
+;; the Free Software Foundation; either version 2 of the License, or
 ;; (at your option) any later version.
 
 ;; This program is distributed in the hope that it will be useful,
@@ -17,20 +17,20 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;;; Commentary
+;;; Commentary:
 
 ;;;; I wrote this since I saw one mode for yacc files out there roaming the
-;;;; world.     I was daunted by the fact the it was written in 1990, and emacs
+;;;; world.     I was daunted by the fact the it was written in 1990, and Emacs
 ;;;; has evolved so much since then (this I assume based on its evolution since
 ;;;; i started using it).     So I figured if i wanted one, I should make it
 ;;;; myself.     Please excuse idiosyncrasies, as this was my first major mode
 ;;;; of this kind.     The indentation code may be a bit weird, I am not sure,
-;;;; it was my first go at doing emacs indentation, so I look at how other
+;;;; it was my first go at doing Emacs indentation, so I look at how other
 ;;;; modes did it, but then basically did what I thought was right
 
 ;;;; I hope this is useful to other hackers, and happy Bison/Yacc hacking
 ;;;; If you have ideas/suggestions/problems with this code, I can be reached at
-;;;; beuscher@eecs.tulane.edu 
+;;;; beuscher@eecs.tulane.edu
 
 ;;;; Eric --- Sat Mar  7 1:40:20 CDT 1998
 
@@ -752,7 +752,7 @@ assumes indenting a new line, i.e. at column 0
 	  (funcall reset-pt))
 	 ((bison--within-production-body-p section)
 	  (back-to-indentation)
-	  (if (not (= (current-column) bison-rule-enumeration-column)) 
+	  (if (not (= (current-column) bison-rule-enumeration-column))
 	      (progn
 		(just-no-space)
 		(indent-to-column
@@ -876,7 +876,7 @@ in \"%}\", then make sure the \"%}\" indents to the beginning of the line"
 	    )))
 
 (defun bison-electric-semicolon (arg)
-  "if the semicolon is used to end a production, then place it in 
+  "if the semicolon is used to end a production, then place it in
 bison-rule-separator-column
 
 a semicolon is deemed to be used for ending a production if it is not found
@@ -948,7 +948,7 @@ declaration section, then indent to bison-decl-token-column
 			  (indent-to-column bison-decl-token-column)))))))))
 
 ;(defun bison-electric-semicolon (arg)
-;  "if the semicolon is used to end a production, then place it in 
+;  "if the semicolon is used to end a production, then place it in
 ;bison-rule-separator-column
 
 ;a semicolon is deemed to be used for ending a production if it is not found
