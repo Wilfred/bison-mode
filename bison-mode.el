@@ -79,7 +79,6 @@
 
 ;; *************** dependencies ***************
 (require 'derived)			;; define-derived-mode
-(require 'make-regexp)			;; make-regexp
 
 ;; *************** internal vars ***************
 
@@ -151,7 +150,7 @@ key's electric variable")
 (defvar bison-font-lock-keywords-2
   (append
    (list
-    (cons (concat "^\\(" (make-regexp bison--declarers) "\\)")
+    (cons (concat "^\\(" (regexp-opt bison--declarers) "\\)")
 	  '(1 font-lock-keyword-face))
     )
    bison-font-lock-keywords-1)
@@ -500,7 +499,7 @@ save excursion is done higher up, so i dont concern myself here.
   (save-excursion
     (goto-char bol)
     (re-search-forward
-     (concat "^" (make-regexp (copy-list bison--declarers))) eol t)))
+     (concat "^" (regexp-opt (copy-list bison--declarers))) eol t)))
 
 (defun bison--production-opener-p (bol eol)
   "return t if the current line is a line that introduces a new production"
