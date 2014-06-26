@@ -1,11 +1,10 @@
-; -*- Mode: Emacs-Lisp; -*- 
+;; bison-mode.el --- Major mode for editing bison, yacc and lex files.
 
-;;;; bison-mode.el --- Major mode for editing bison/yacc files
 ;;;; Copyright (C) 1998 Eric Beuscher
 
 ;; Author:   Eric Beuscher <beuscher@eecs.tulane.edu>
 ;; Created:  2 Feb 1998
-;; Version:  .1 (why not start somewhere besides 1.)
+;; Version:  0.2
 ;; Keywords: bison-mode, yacc-mode
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -18,7 +17,7 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;;;;Commentary
+;;; Commentary
 
 ;;;; I wrote this since I saw one mode for yacc files out there roaming the
 ;;;; world.     I was daunted by the fact the it was written in 1990, and emacs
@@ -34,7 +33,6 @@
 ;;;; beuscher@eecs.tulane.edu 
 
 ;;;; Eric --- Sat Mar  7 1:40:20 CDT 1998
-
 
 ;;;; Bison Sections:
 ;;;; there are five sections to a bison file (if you include the area above the
@@ -72,7 +70,6 @@
 
 ;;;; todo:  should make available a way to use C-electricity if in C sexps
 
-
 ;;;;  these are the lines i use to set up correct auto-ing
 ;;(autoload 'bison-mode "bison-mode.el")
 ;;(add-to-set! auto-mode-alist '("\\.y$" . bison-mode))
@@ -80,14 +77,12 @@
 ;;(autoload 'flex-mode "flex-mode")
 ;;(add-to-set! auto-mode-alist '("\\.l$" . flex-mode))
 
-
+;;; Code:
 
 ;; *************** dependencies ***************
-
 (require 'derived)			;; define-derived-mode
 (require 'flex-mode)			;; for flex-mode derivation
 (require 'make-regexp)			;; make-regexp
-
 
 ;; *************** internal vars ***************
 
@@ -983,7 +978,5 @@ declaration section, then indent to bison-decl-token-column
 ;    (goto-char (point-max))
 ;    (if (re-search-forward "^%%" nil t)
 
-
 (provide 'bison-mode)
-
-;; *************** end of code ***************
+;;; bison-mode.el ends here
