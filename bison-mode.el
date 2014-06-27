@@ -79,6 +79,7 @@
 
 ;; *************** dependencies ***************
 (require 'derived)			;; define-derived-mode
+(require 'cc-mode)
 
 ;; *************** internal vars ***************
 
@@ -227,19 +228,18 @@ and \(point\)"
 
 ;; *************** bison-mode ***************
 
+;;;###autoload
 (define-derived-mode bison-mode c-mode "Bison"
   "Major mode for editing bison/yacc files."
 
   ;; try to set the indentation correctly
-  (setq-default c-basic-offset 4)
-  (make-variable-buffer-local 'c-basic-offset)
+  (setq c-basic-offset 4)
 
   (c-set-offset 'knr-argdecl-intro 0)
-  (make-variable-buffer-local 'c-offsets-alist)
   
   ;; remove auto and hungry anything
   (c-toggle-auto-hungry-state -1)
-  (c-toggle-auto-state -1)
+  (c-toggle-auto-newline -1)
   (c-toggle-hungry-state -1)
 
   (use-local-map bison-mode-map)
@@ -278,7 +278,7 @@ and \(point\)"
   "Return the section that user is currently in"
   (save-excursion
     (let ((bound (point)))
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (bison--section-p-helper bound))))
 
 (defun bison--section-p-helper (bound)
@@ -415,7 +415,7 @@ found."
   (let ((point (or point (point)))
 	(in-p nil))
     (save-excursion
-      (beginning-of-buffer)
+      (goto-char (point-min))
 
       (while (re-search-forward "[^\\]\"" point t)
 	(setq in-p (not in-p)))
@@ -646,7 +646,7 @@ assumes indenting a new line, i.e. at column 0
 	      (progn
 		(back-to-indentation)
 		(just-no-space)
-		(function reset-pt)))))
+		(funcall reset-pt)))))
        
        ((= section bison--bison-decls-section)
 	(let ((opener (bison--bison-decl-opener-p bol eol)))
