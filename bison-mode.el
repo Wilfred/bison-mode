@@ -404,7 +404,6 @@ found."
 (defun bison--within-braced-c-expression-p (section)
   "return t if the point is within an sexp delimited by braces \({,}\)
 "
-  ;;(debug)
   (save-excursion
     (bison--within-braced-c-expression-p-h section (point))))
 
@@ -543,7 +542,6 @@ assumes indenting a new line, i.e. at column 0
 "
   (interactive)
 
-  ;;(message "indent new line")
   (let* ((section (bison--section-p))
 	 (c-sexp (or c-sexp (bison--within-braced-c-expression-p section)))
 	 )
@@ -594,7 +592,6 @@ assumes indenting a new line, i.e. at column 0
 "
   (interactive)
   
-  ;;(message "indent-line")
   (let* ((pos (- (point-max) (point)))
 	 (reset-pt (function (lambda ()
 			       (if (> (- (point-max) pos) (point))
