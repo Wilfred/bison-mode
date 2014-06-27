@@ -77,8 +77,6 @@
 
 ;;; Code:
 
-;; *************** dependencies ***************
-(require 'derived)			;; define-derived-mode
 (require 'cc-mode)
 
 ;; *************** internal vars ***************
