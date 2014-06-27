@@ -646,7 +646,7 @@ assumes indenting a new line, i.e. at column 0
 	      (progn
 		(back-to-indentation)
 		(just-no-space)
-		(function reset-pt)))))
+		(funcall reset-pt)))))
        
        ((= section bison--bison-decls-section)
 	(let ((opener (bison--bison-decl-opener-p bol eol)))
