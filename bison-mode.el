@@ -161,25 +161,12 @@ key's electric variable")
 
 ;; *************** utilities ***************
 
-(defun same-line-p (pt1 pt2 &optional bol eol)
-  (let ((bol (or bol (save-excursion (beginning-of-line) (point))))
-	(eol (or eol (save-excursion (end-of-line) (point)))))
-    (and (<= bol pt1) (<= bol pt2)
-	 (>= eol pt1) (>= eol pt2))))
-
 (defun just-no-space ()
   "Delete all spaces and tabs around point, leaving no spaces."
   (interactive "*")
   (skip-chars-backward " \t")
   (delete-region (point) (progn (skip-chars-forward " \t") (point)))
   t)
-
-(defun white-space-separation (pt1 pt2)
-  "return t if there is nothing but whitespace between pt1 and pt2 not
-inclusive"
-  (save-excursion
-    (goto-char (+ pt1 1))
-    (not (re-search-forward "[^ \t\n]" pt2 t))))
 
 (defun previous-white-space-p ()
   "return t if there is whitespace between the beginning of the line and the
@@ -214,10 +201,6 @@ and \(point\)"
     (let ((eol (progn (end-of-line) (point))))
       (beginning-of-line)	;; should already be there anyway
       (not (re-search-forward "[^ \t\n]" eol t)))))
-
-
-(defun goto-next-non-ws ()
-  "goto and return pt of next non-whitespace character")
 
 ;; *************** bison-mode ***************
 
