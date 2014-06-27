@@ -228,6 +228,7 @@ and \(point\)"
 
 ;; *************** bison-mode ***************
 
+;;;###autoload
 (define-derived-mode bison-mode c-mode "Bison"
   "Major mode for editing bison/yacc files."
 
