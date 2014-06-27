@@ -79,6 +79,7 @@
 
 ;; *************** dependencies ***************
 (require 'derived)			;; define-derived-mode
+(require 'cc-mode)
 
 ;; *************** internal vars ***************
 
@@ -237,7 +238,7 @@ and \(point\)"
   
   ;; remove auto and hungry anything
   (c-toggle-auto-hungry-state -1)
-  (c-toggle-auto-state -1)
+  (c-toggle-auto-newline -1)
   (c-toggle-hungry-state -1)
 
   (use-local-map bison-mode-map)
@@ -276,7 +277,7 @@ and \(point\)"
   "Return the section that user is currently in"
   (save-excursion
     (let ((bound (point)))
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (bison--section-p-helper bound))))
 
 (defun bison--section-p-helper (bound)
@@ -413,7 +414,7 @@ found."
   (let ((point (or point (point)))
 	(in-p nil))
     (save-excursion
-      (beginning-of-buffer)
+      (goto-char (point-min))
 
       (while (re-search-forward "[^\\]\"" point t)
 	(setq in-p (not in-p)))
