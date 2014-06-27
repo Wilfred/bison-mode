@@ -163,11 +163,6 @@ key's electric variable")
 
 ;; *************** utilities ***************
 
-(defun copy-list (ls)
-  "return a new list with the same elements as LS"
-  (cond ((null ls) '())
-	(t (cons (car ls) (copy-list (cdr ls))))))
-
 (defun same-line-p (pt1 pt2 &optional bol eol)
   (let ((bol (or bol (save-excursion (beginning-of-line) (point))))
 	(eol (or eol (save-excursion (end-of-line) (point)))))
@@ -499,7 +494,7 @@ save excursion is done higher up, so i dont concern myself here.
   (save-excursion
     (goto-char bol)
     (re-search-forward
-     (concat "^" (regexp-opt (copy-list bison--declarers))) eol t)))
+     (concat "^" (regexp-opt (copy-sequence bison--declarers))) eol t)))
 
 (defun bison--production-opener-p (bol eol)
   "return t if the current line is a line that introduces a new production"
