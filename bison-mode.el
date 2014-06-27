@@ -231,11 +231,9 @@ and \(point\)"
   "Major mode for editing bison/yacc files."
 
   ;; try to set the indentation correctly
-  (setq-default c-basic-offset 4)
-  (make-variable-buffer-local 'c-basic-offset)
+  (setq c-basic-offset 4)
 
   (c-set-offset 'knr-argdecl-intro 0)
-  (make-variable-buffer-local 'c-offsets-alist)
   
   ;; remove auto and hungry anything
   (c-toggle-auto-hungry-state -1)
