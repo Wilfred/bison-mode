@@ -70,14 +70,14 @@
 
 ;;;; todo:  should make available a way to use C-electricity if in C sexps
 
-;;;;  these are the lines i use to set up correct auto-ing
-;;(autoload 'bison-mode "bison-mode.el")
-;;(add-to-set! auto-mode-alist '("\\.y$" . bison-mode))
-;;(add-to-set! auto-mode-alist '("\\.l$" . bison-mode))
-
 ;;; Code:
 
 (require 'cc-mode)
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.y\\'" . bison-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.l\\'" . bison-mode))
 
 ;; *************** internal vars ***************
 

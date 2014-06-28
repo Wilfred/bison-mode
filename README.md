@@ -13,6 +13,8 @@ Many byte-compiler fixes.
 
 Fixed a crash on indentation.
 
+bison-mode is now started automatically for .y and .l files.
+
 ### 0.1
 
 Initial release.
