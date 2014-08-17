@@ -143,21 +143,14 @@ key's electric variable")
   "non-nil means use an electric greater-than")
 
 
-(defvar bison-font-lock-keywords-1 c-font-lock-keywords
-  "Basic highlighting for Bison mode.")
-
-(defvar bison-font-lock-keywords-2
+(defconst bison-font-lock-keywords
   (append
    (list
     (cons (concat "^\\(" (regexp-opt bison--declarers) "\\)")
 	  '(1 font-lock-keyword-face))
     )
-   bison-font-lock-keywords-1)
-  "Gaudy highlighting for Bison mode.")
-
-(defvar bison-font-lock-keywords bison-font-lock-keywords-2
+   c-font-lock-keywords)
   "Default expressions to highlight in Bison mode")
-
 
 ;; *************** utilities ***************
 
@@ -241,11 +234,7 @@ and \(point\)"
 	comment-end "*/")
   (make-local-variable 'font-lock-keywords)
   (setq font-lock-keywords nil)
-  (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '((bison-font-lock-keywords
-			      bison-font-lock-keywords-1
-			      bison-font-lock-keywords-2)
-			     nil nil nil)))
+  (set (make-local-variable 'font-lock-defaults) '(bison-font-lock-keywords)))
 
 
 ;; *************** section parsers ***************
