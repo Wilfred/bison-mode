@@ -222,9 +222,7 @@ and \(point\)"
   (define-key bison-mode-map "<" 'bison-electric-less-than)
   (define-key bison-mode-map ">" 'bison-electric-greater-than)
 
-  ;(define-key bison-mode-map [tab] 'bison-indent-command)
   (define-key bison-mode-map [tab] 'bison-indent-line)
-  ;(define-key bison-mode-map [f10] 'c-indent-command)
   
   (make-local-variable 'indent-line-function)
   (setq indent-line-function 'bison-indent-new-line)
@@ -416,12 +414,7 @@ save excursion is done higher up, so i dont concern myself here.
 	       (bison--within-braced-c-expression-p-h-h opener low-pt)
 	     nil)))
 	((= section bison--c-code-section)
-	 t)
-;;	 (let ((opener (save-excursion (bison--find-production-opener))))
-;;	   (if opener
-;;	       (bison--within-braced-c-expression-p-h-h
-;;		opener low-pt 1))))
-	))
+	 t)))
 
 (defun bison--within-braced-c-expression-p-h-h (high-pt low-pt)
   "
@@ -443,7 +436,7 @@ save excursion is done higher up, so i dont concern myself here.
 	  (progn
 	    (setq success t)
 	    (setq done t))))
-	
+      
       (if success
 	  (let ((end-pt
 		 (condition-case nil
@@ -557,9 +550,6 @@ assumes indenting a new line, i.e. at column 0
       (t (c-indent-line))))
      ((= section bison--pre-c-decls-section)
       (c-indent-line))
-;;;     ((= section bison--c-decls-section) ; is on column 0 anyway
-;;;      (indent-to-column 0)
-;;;      )
      ((= section bison--bison-decls-section)
       (indent-to-column bison-decl-token-column))
      ((= section bison--grammar-rules-section)
@@ -580,8 +570,7 @@ assumes indenting a new line, i.e. at column 0
      )))
 
 (defun bison-indent-line ()
-  "Indent a line of bison code
-"
+  "Indent a line of bison code."
   (interactive)
   
   (let* ((pos (- (point-max) (point)))
@@ -771,8 +760,7 @@ a word(alphanumerics or '_''s), and there is no previous white space.
 		  (just-no-space)))
 	    (if (not (< (current-column) bison-rule-enumeration-column))
 		(newline))
-	    (indent-to-column bison-rule-enumeration-column)))
-    ))
+	    (indent-to-column bison-rule-enumeration-column)))))
 
 (defun bison-electric-pipe (arg)
   "If the pipe <|> is used as a rule separator within a production,
@@ -855,9 +843,8 @@ bison-electric-semicolon function yet
   (self-insert-command (prefix-numeric-value arg)))
 
 (defun bison-electric-percent (arg)
-  "if the percent is a declarer in the bison declaration's section,
-then put it in the 0 column
-"
+  "If the percent is a declarer in the bison declaration's section,
+then put it in the 0 column."
   (interactive "P")
 
   (if (and bison-electric-percent-v
@@ -872,9 +859,8 @@ then put it in the 0 column
   (self-insert-command (prefix-numeric-value arg)))
 
 (defun bison-electric-less-than (arg)
-  "if the less-than is a type declarer opener for tokens in the bison
-declaration section, then put it in the bison-decl-type-column column
-"
+  "If the less-than is a type declarer opener for tokens in the bison
+declaration section, then put it in the bison-decl-type-column column."
   (interactive "P")
 
   (if (and bison-electric-less-than-v
@@ -886,13 +872,12 @@ declaration section, then put it in the bison-decl-type-column column
 	  (progn
 	    (just-no-space)
 	    (indent-to-column bison-decl-type-column))))
-	      
+  
   (self-insert-command (prefix-numeric-value arg)))
 
 (defun bison-electric-greater-than (arg)
-  "if the greater-than is a type declarer closer for tokens in the bison
-declaration section, then indent to bison-decl-token-column
-"
+  "If the greater-than is a type declarer closer for tokens in the bison
+declaration section, then indent to bison-decl-token-column."
   (interactive "P")
 
   (self-insert-command (prefix-numeric-value arg))
@@ -911,30 +896,6 @@ declaration section, then indent to bison-decl-token-column
 			(progn
 			  (just-no-space)
 			  (indent-to-column bison-decl-token-column)))))))))
-
-;(defun bison-electric-semicolon (arg)
-;  "if the semicolon is used to end a production, then place it in
-;bison-rule-separator-column
-
-;a semicolon is deemed to be used for ending a production if it is not found
-;within braces
-;"
-;  (interactive "P")
-;  (if (and (not (bison--within-braced-c-expression-p))
-;	   (line-of-whitespace-p)
-;	   (
-;      (progn
-;	(just-no-space)			;; remove extraneous whitespace
-;	(indent-to-column bison-rule-separator-column)))
-
-;  (self-insert-command (prefix-numeric-value arg)))
-
-;; *************** other ***************
-
-;(defun bison--confirm-productions-closed ()
-;  (save-excursion
-;    (goto-char (point-max))
-;    (if (re-search-forward "^%%" nil t)
 
 (provide 'bison-mode)
 ;;; bison-mode.el ends here
