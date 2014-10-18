@@ -447,7 +447,10 @@ save excursion is done higher up, so i dont concern myself here.
       (if success
 	  (let ((end-pt
 		 (condition-case nil
-		     (progn (forward-sexp) (point))
+		     (progn
+                       (backward-char)
+                       (forward-sexp)
+                       (point))
 		   (error nil))))
 	    (if end-pt
 		(if (> end-pt low-pt)
