@@ -4,6 +4,12 @@ Bison major-mode for Emacs.
 
 ## Changelog
 
+### 0.3
+
+Added support for jison mode.
+
+jison-mode is started automatically for .jison files
+
 ### 0.2
 
 Update for compatibility with modern Emacsen, and removed dependencies

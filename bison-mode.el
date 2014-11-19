@@ -78,6 +78,8 @@
 (add-to-list 'auto-mode-alist '("\\.y\\'" . bison-mode))
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.l\\'" . bison-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.jison\\'" . jison-mode))
 
 ;; *************** internal vars ***************
 
@@ -897,5 +899,9 @@ declaration section, then indent to bison-decl-token-column."
 			  (just-no-space)
 			  (indent-to-column bison-decl-token-column)))))))))
 
+(define-derived-mode jison-mode bison-mode
+  "Major mode for editing jison files.")
+
 (provide 'bison-mode)
+(provide 'jison-mode)
 ;;; bison-mode.el ends here
