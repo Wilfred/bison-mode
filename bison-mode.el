@@ -899,6 +899,7 @@ declaration section, then indent to bison-decl-token-column."
 			  (just-no-space)
 			  (indent-to-column bison-decl-token-column)))))))))
 
+;;;###autoload
 (define-derived-mode jison-mode bison-mode
   "Major mode for editing jison files.")
 
