@@ -77,7 +77,7 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.y\\'" . bison-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.l\\'" . bison-mode))
+(add-to-list 'auto-mode-alist '("\\.l\\'" . flex-mode))
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.jison\\'" . jison-mode))
 
@@ -900,9 +900,14 @@ declaration section, then indent to bison-decl-token-column."
 			  (indent-to-column bison-decl-token-column)))))))))
 
 ;;;###autoload
-(define-derived-mode jison-mode bison-mode
+(define-derived-mode jison-mode bison-mode "jison"
   "Major mode for editing jison files.")
+;;;###autoload
+(define-derived-mode flex-mode bison-mode "flex"
+  "Major mode for editing flex files. (bison-mode by any other name)")
 
 (provide 'bison-mode)
 (provide 'jison-mode)
+(provide 'flex-mode)
+
 ;;; bison-mode.el ends here
