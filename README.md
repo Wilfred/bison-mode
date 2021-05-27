@@ -8,7 +8,9 @@ Bison major-mode for Emacs.
 
 Added support for jison mode.
 
-jison-mode is started automatically for .jison files
+jison-mode is started automatically for .jison files.
+
+Functions are now properly namespaced.
 
 ### 0.2
 

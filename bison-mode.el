@@ -197,14 +197,14 @@ key's electric variable"
 
 ;; *************** utilities ***************
 
-(defun just-no-space ()
+(defun bison--just-no-space ()
   "Delete all spaces and tabs around point, leaving no spaces."
   (interactive "*")
   (skip-chars-backward " \t")
   (delete-region (point) (progn (skip-chars-forward " \t") (point)))
   t)
 
-(defun previous-white-space-p ()
+(defun bison--previous-white-space-p ()
   "return t if there is whitespace between the beginning of the line and the
 current (point)"
   (save-excursion
@@ -214,7 +214,7 @@ current (point)"
 	  t
 	nil))))
 
-(defun previous-non-ws-p ()
+(defun bison--previous-non-ws-p ()
   "return t if there are non-whitespace characters between beginning of line
 and \(point\)"
   (save-excursion
@@ -223,7 +223,7 @@ and \(point\)"
     (re-search-forward "[^ \t]" current-point t)
     )))
 
-(defun following-non-ws-p ()
+(defun bison--following-non-ws-p ()
   "return t if there are non-whitespace characters on the line"
   (save-excursion
     (let ((current-point (point)))
@@ -231,7 +231,7 @@ and \(point\)"
       (re-search-backward "[^ \t]+" current-point t)
       )))
 
-(defun line-of-whitespace-p ()
+(defun bison--line-of-whitespace-p ()
   "return t if the line consists of nothiing but whitespace, nil otherwise"
   (save-excursion
     (let ((eol (progn (end-of-line) (point))))
@@ -333,7 +333,7 @@ and \(point\)"
       (let ((position (re-search-forward
 		       bison--production-re current-point t)))
 	(and position
-	     (not (previous-white-space-p))
+	     (not (bison--previous-white-space-p))
 	     (= position current-point))))))
 
 (defun bison--find-production-opener ()
@@ -555,7 +555,7 @@ alternative"
 	      (if (not (= o-brace indent-column)) ;; but not in right spot
 		  (progn
 		    (back-to-indentation)
-		    (just-no-space)
+		    (bison--just-no-space)
 		    (indent-to-column indent-column))
 		;; else all is good
 		)
@@ -625,7 +625,7 @@ assumes indenting a new line, i.e. at column 0
 	 )
     (let* ((section (bison--section-p))
 	   (c-sexp (bison--within-braced-c-expression-p section))
-	   (ws-line (line-of-whitespace-p))
+	   (ws-line (bison--line-of-whitespace-p))
 	   )
       (cond
        ;; if you are a line of whitespace, let indent-new-line take care of it
@@ -642,7 +642,7 @@ assumes indenting a new line, i.e. at column 0
 	  (if (not (= (current-indentation) 0))
 	      (progn
 		(back-to-indentation)
-		(just-no-space)
+		(bison--just-no-space)
 		(funcall reset-pt)))))
 
        ((= section bison--bison-decls-section)
@@ -653,10 +653,10 @@ assumes indenting a new line, i.e. at column 0
 	    (skip-chars-forward " \t" eol)
 	    (if (looking-at "{")
 		(save-excursion
-		  (if (following-non-ws-p)
+		  (if (bison--following-non-ws-p)
 		      (progn
 			(forward-char 1)
-			(just-no-space)
+			(bison--just-no-space)
 			(newline)
 			(bison-indent-new-line t))))
 	      (let ((complete-type t))
@@ -665,7 +665,7 @@ assumes indenting a new line, i.e. at column 0
 		      (setq complete-type nil)
 		      (if (not (= (current-column) bison-decl-type-column))
 			  (progn
-			    (just-no-space)
+			    (bison--just-no-space)
 			    (indent-to-column bison-decl-type-column))
 			(and (re-search-forward
 			      (concat "<" bison--word-constituent-re "+>")
@@ -677,7 +677,7 @@ assumes indenting a new line, i.e. at column 0
 		      (concat "\\(" bison--word-constituent-re "\\|'\\)"))
 		     (if (not (= (current-column) bison-decl-token-column))
 			 (progn
-			   (just-no-space)
+			   (bison--just-no-space)
 			   (indent-to-column bison-decl-token-column))))))
 	    (funcall reset-pt))
 	   (c-sexp
@@ -689,12 +689,12 @@ assumes indenting a new line, i.e. at column 0
 		   (looking-at bison--word-constituent-re)
 		   (if (not (= (current-column) bison-decl-token-column))
 		       (progn
-			 (just-no-space)
+			 (bison--just-no-space)
 			 (indent-to-column bison-decl-token-column))))
 		  ;; put/keep close-brace in the 0 column
 		  ((looking-at "}")
 		   (if (not (= (current-column) 0))
-		       (just-no-space)))
+		       (bison--just-no-space)))
 		  ;; leave comments alone
 		  ((looking-at (regexp-quote comment-start)) nil)
 		  ;; else do nothing
@@ -705,10 +705,10 @@ assumes indenting a new line, i.e. at column 0
 	 ((bison--production-opener-p bol eol)
 	  (beginning-of-line)
 	  (re-search-forward bison--production-re);; SIGERR
-	  (if (following-non-ws-p)
+	  (if (bison--following-non-ws-p)
 	      (if (> (current-column) bison-rule-enumeration-column)
 		  (progn
-		    (just-no-space)
+		    (bison--just-no-space)
 		    (newline)
 		    (indent-to-column bison-rule-enumeration-column))
 		(save-excursion
@@ -716,7 +716,7 @@ assumes indenting a new line, i.e. at column 0
 		  (let ((col (current-column)))
 		    (cond ((> col (+ 1 bison-rule-enumeration-column))
 			   (forward-char -1)
-			   (just-no-space)
+			   (bison--just-no-space)
 			   (indent-to-column bison-rule-enumeration-column))
 			  ((< col (+ 1 bison-rule-enumeration-column))
 			   (forward-char -1)
@@ -727,16 +727,16 @@ assumes indenting a new line, i.e. at column 0
 	  (back-to-indentation);; should put point on "|"
 	  (if (not (= (current-column) bison-rule-separator-column))
 	      (progn
-		(just-no-space)
+		(bison--just-no-space)
 		(indent-to-column bison-rule-separator-column)))
 	  (forward-char 1)
-	  (if (following-non-ws-p)
+	  (if (bison--following-non-ws-p)
 	      (save-excursion
 		(re-search-forward bison--word-constituent-re);; SIGERR
 		(let ((col (current-column)))
 		  (cond ((> col (+ 1 bison-rule-enumeration-column))
 			 (forward-char -1)
-			 (just-no-space)
+			 (bison--just-no-space)
 			 (indent-to-column bison-rule-enumeration-column))
 			((< col (+ 1 bison-rule-enumeration-column))
 			 (forward-char -1)
@@ -751,7 +751,7 @@ assumes indenting a new line, i.e. at column 0
 	  (back-to-indentation)
 	  (if (not (= (current-column) bison-rule-enumeration-column))
 	      (progn
-		(just-no-space)
+		(bison--just-no-space)
 		(indent-to-column
 		 bison-rule-enumeration-column)))
 	  (funcall reset-pt))
@@ -762,7 +762,7 @@ assumes indenting a new line, i.e. at column 0
 		(if (not (= cur-ind bison-rule-enumeration-column))
 		    (progn
 		      (back-to-indentation)
-		      (just-no-space)
+		      (bison--just-no-space)
 		      (indent-to-column bison-rule-enumeration-column)
 		      (funcall reset-pt)))
 	      ;; else leave alone
@@ -800,7 +800,7 @@ a word(alphanumerics or '_''s), and there is no previous white space.
 		   "\\s "
 		   (save-excursion (beginning-of-line) (point))
 		   t)
-		  (just-no-space)))
+		  (bison--just-no-space)))
 	    (if (not (< (current-column) bison-rule-enumeration-column))
 		(newline))
 	    (indent-to-column bison-rule-enumeration-column)))))
@@ -816,11 +816,11 @@ a word(alphanumerics or '_''s), and there is no previous white space.
   (if (and bison-electric-pipe-v
 	   (not bison-all-electricity-off)
 	   (= bison--grammar-rules-section (bison--section-p))
-	   (line-of-whitespace-p)
+	   (bison--line-of-whitespace-p)
 	   )
       (progn
 	(beginning-of-line)
-	(just-no-space)
+	(bison--just-no-space)
 	(indent-to-column bison-rule-separator-column)
 	(self-insert-command (prefix-numeric-value arg))
 	(indent-to-column bison-rule-enumeration-column)
@@ -838,17 +838,17 @@ bison-rule-enumeration-column"
       (let ((section (bison--section-p)))
 	(cond ((and (= section bison--grammar-rules-section)
 		    (not (bison--within-braced-c-expression-p section))
-		    (not (previous-non-ws-p)))
+		    (not (bison--previous-non-ws-p)))
 	       (if (not (= (current-column) bison-rule-enumeration-column))
 		   (progn
-		     (just-no-space)
+		     (bison--just-no-space)
 		     (indent-to-column bison-rule-enumeration-column))))
 	      ((and (= section bison--bison-decls-section)
 		    (not (bison--within-braced-c-expression-p section))
-		    (not (previous-non-ws-p)))
+		    (not (bison--previous-non-ws-p)))
 	       (if (not (= (current-column) 0))
 		   (progn
-		     (just-no-space)
+		     (bison--just-no-space)
 		     (indent-to-column 0)))))))
 
   (self-insert-command (prefix-numeric-value arg)))
@@ -866,7 +866,7 @@ in \"%}\", then make sure the \"%}\" indents to the beginning of the line"
       (cond ((search-backward "%}" (- (point) 2) t)
 	     (if (= (bison--section-p) bison--c-decls-section)
 		 (progn
-		   (just-no-space)
+		   (bison--just-no-space)
 		   (forward-char 2))	; for "%}"
 	       (forward-char 1)))
 	    )))
@@ -895,9 +895,9 @@ then put it in the 0 column."
       (let ((section (bison--section-p)))
 	(if (and (= section bison--bison-decls-section)
 		 (not (bison--within-braced-c-expression-p section))
-		 (not (previous-non-ws-p))
+		 (not (bison--previous-non-ws-p))
 		 (not (= (current-column) 0)))
-	    (just-no-space))))
+	    (bison--just-no-space))))
 
   (self-insert-command (prefix-numeric-value arg)))
 
@@ -913,7 +913,7 @@ declaration section, then put it in the bison-decl-type-column column."
 		(save-excursion (beginning-of-line) (point))
 		(point)))
 	  (progn
-	    (just-no-space)
+	    (bison--just-no-space)
 	    (indent-to-column bison-decl-type-column))))
 
   (self-insert-command (prefix-numeric-value arg)))
@@ -935,9 +935,9 @@ declaration section, then indent to bison-decl-token-column."
 		(if (re-search-forward
 		     (concat "<" bison--word-constituent-re "+>")
 		     current-pt t)
-		    (if (not (following-non-ws-p))
+		    (if (not (bison--following-non-ws-p))
 			(progn
-			  (just-no-space)
+			  (bison--just-no-space)
 			  (indent-to-column bison-decl-token-column)))))))))
 
 ;;;###autoload
